@@ -3,15 +3,19 @@ repeat task.wait() until game:IsLoaded()
 local RunService = game:GetService("RunService")
 local workspace = game:GetService("Workspace")
 
--- 🔥 CONFIG DESDE AFUERA
-getgenv().HITBOX_ENABLED = getgenv().HITBOX_ENABLED ~= false
+-- 🔥 TOGGLE AUTOMÁTICO
+getgenv().HITBOX_ENABLED = not getgenv().HITBOX_ENABLED
+
+-- 🔥 CONFIG (si no existen)
 getgenv().HITBOX_SIZE = getgenv().HITBOX_SIZE or 10
 getgenv().HITBOX_TRANSPARENCY = getgenv().HITBOX_TRANSPARENCY or 0.8
 
--- Guardar datos originales
+-- evitar duplicar loops
+if getgenv().HITBOX_LOOP then return end
+
 local OriginalData = {}
 
-RunService.RenderStepped:Connect(function()
+getgenv().HITBOX_LOOP = RunService.RenderStepped:Connect(function()
 
 	local EnemiesFolder = workspace:FindFirstChild("Enemies")
 	if not EnemiesFolder then return end
